@@ -21,7 +21,7 @@ export function FeedList({ refreshKey }: { refreshKey: number }) {
   const [mode, setMode] = useState<"explore" | "my-posts">("explore");
   const isFetchingRef = useRef(false);
 
-  const fetchPosts = async (pageToFetch: number, selectedMode = mode) => {
+  const fetchPosts = useCallback(async (pageToFetch: number, selectedMode = mode) => {
     try {
       isFetchingRef.current = true;
       const endpoint =
@@ -42,7 +42,7 @@ export function FeedList({ refreshKey }: { refreshKey: number }) {
     } finally {
       isFetchingRef.current = false;
     }
-  };
+  }, [mode]);
 
   const fetchNext = () => {
     if (!isFetchingRef.current && hasMore) {
@@ -55,7 +55,7 @@ export function FeedList({ refreshKey }: { refreshKey: number }) {
     setPage(1);
     setHasMore(true);
     fetchPosts(1);
-  }, [refreshKey, mode]);
+  }, [refreshKey, mode, fetchPosts]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -87,7 +87,7 @@ export function FeedList({ refreshKey }: { refreshKey: number }) {
           </div>
         }
         endMessage={
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-center text-sm text-muted-foreground mt-4">
             {posts.length > 0 ? "No more posts." : "No posts available."}
           </p>
         }

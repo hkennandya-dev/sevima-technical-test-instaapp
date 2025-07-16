@@ -52,13 +52,13 @@ export function RegisterForm({
       const res = await api.post("/register", data);
 
       if (res.data?.status === 200) {
-        toast.success("Register successful!");
+        toast.success(res.data.message || "Register successfully.");
         router.push("/login");
       } else {
-        toast.error(res.data?.message || "Registration failed.");
+        toast.error(res.data?.message || "Unexpected response from server.");
       }
     } catch (err: unknown) {
-      const message = parseErrorMessage(err, "Registration failed.");
+      const message = parseErrorMessage(err, "Unexpected response from server.");
       let serverErrors: Record<string, string[]> | undefined;
 
       const typedErr = err as AxiosErrorResponse;
@@ -101,7 +101,7 @@ export function RegisterForm({
               <Input
                 id="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder="Enter your name"
                 {...register("name")}
               />
               {errors.name && (
@@ -113,7 +113,7 @@ export function RegisterForm({
               <Input
                 id="username"
                 type="text"
-                placeholder="johndoe"
+                placeholder="Enter your username"
                 {...register("username")}
               />
               {errors.username && (
@@ -127,6 +127,7 @@ export function RegisterForm({
               <Input
                 id="password"
                 type="password"
+                placeholder="Enter your password"
                 {...register("password")}
               />
               {errors.password && (
@@ -140,9 +141,9 @@ export function RegisterForm({
               {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Register"}
             </Button>
 
-            <div className="mt-4 text-center text-sm">
+            <div className="mt-4 text-center text-sm text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/login">
+              <Link href="/login" className="text-foreground">
                 Login
               </Link>
             </div>

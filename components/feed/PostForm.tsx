@@ -118,7 +118,7 @@ export function PostForm({ onSuccess }: { onSuccess: () => void }) {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 mb-6 border p-4 rounded-md bg-background"
+            className="space-y-4 border p-4 rounded-md bg-background"
             ref={formRef}
         >
             <Textarea

@@ -49,13 +49,13 @@ export function LoginForm({
 
       if (res.data?.status === 200 && res.data?.data?.token) {
         localStorage.setItem("auth-token", res.data.data.token);
-        toast.success("Login successful!");
+        toast.success(res.data.message || "Login successfully.");
         router.push("/");
       } else {
-        toast.error(res.data?.message || "Unexpected response from server");
+        toast.error(res.data?.message || "Unexpected response from server.");
       }
     } catch (err: unknown) {
-      const message = parseErrorMessage(err, "Login failed.");
+      const message = parseErrorMessage(err, "Unexpected response from server.");
       let serverErrors: Record<string, string[]> | undefined;
 
       const typedErr = err as AxiosErrorResponse;
@@ -98,7 +98,7 @@ export function LoginForm({
               <Input
                 id="username"
                 type="text"
-                placeholder="yourusername"
+                placeholder="Enter your username"
                 {...register("username")}
               />
               {errors.username && (
@@ -111,6 +111,7 @@ export function LoginForm({
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
+                placeholder="Enter your password"
                 type="password"
                 {...register("password")}
               />
@@ -123,9 +124,9 @@ export function LoginForm({
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Login"}
             </Button>
-            <div className="mt-4 text-center text-sm">
+            <div className="mt-4 text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
-              <Link href="/register">
+              <Link href="/register" className="text-foreground">
                 Register
               </Link>
             </div>

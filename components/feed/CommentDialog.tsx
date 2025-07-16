@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, MessageCircle } from "lucide-react";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { toast } from "sonner";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -48,7 +48,7 @@ export function CommentDialog({ postId, count }: { postId: number; count: number
         mode: "onChange",
     });
 
-    const fetchComments = async (pageToFetch: number) => {
+    const fetchComments = useCallback(async (pageToFetch: number) => {
         try {
             isFetchingRef.current = true;
             const res = await api.get(`/posts/${postId}/comments?page=${pageToFetch}&paginate=5`);
@@ -63,7 +63,7 @@ export function CommentDialog({ postId, count }: { postId: number; count: number
         } finally {
             isFetchingRef.current = false;
         }
-    };
+    }, [postId]);
 
     useEffect(() => {
         if (open) {
@@ -72,7 +72,7 @@ export function CommentDialog({ postId, count }: { postId: number; count: number
             setHasMore(true);
             fetchComments(1);
         }
-    }, [open]);
+    }, [open, fetchComments]);
 
     const onSubmit = async (data: CommentForm) => {
         try {
@@ -107,11 +107,11 @@ export function CommentDialog({ postId, count }: { postId: number; count: number
                 <MessageCircle className="h-4 w-4" />
                 <span>{commentCount}</span>
             </button>
-            <DialogContent className="lg:max-w-xl max-h-[90vh] overflow-y-auto">
+            <DialogContent id="scrollableDiv" className="lg:max-w-xl max-h-[90vh] overflow-y-auto">
                 <DialogTitle>Comments</DialogTitle>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 mt-4">
-                    <Textarea
+                    <Textarea className="resize-none"
                         placeholder="Write a comment..."
                         {...register("content")}
                         disabled={isSubmitting}

@@ -104,7 +104,7 @@ export function CommentCard({
                             <DropdownMenuContent align="end" className="w-40">
                                 <DropdownMenuItem
                                     onClick={() => setEditOpen(true)}
-                                    className="cursor-pointer flex justify-between"
+                                    className="flex justify-between"
                                 >
                                     <span>Edit</span>
                                     <Pencil className="w-4 h-4 text-muted-foreground" />
@@ -112,7 +112,7 @@ export function CommentCard({
                                 <DropdownMenuItem
                                     variant="destructive"
                                     onClick={() => setDeleteOpen(true)}
-                                    className="cursor-pointer flex justify-between"
+                                    className="flex justify-between"
                                 >
                                     <span>Delete</span>
                                     <Trash className="w-4 h-4" />
