@@ -11,7 +11,7 @@ import * as z from "zod";
 import { useRef, useState } from "react";
 import { parseErrorMessage } from "@/lib/error";
 import Image from "next/image";
-import { ZoomIn, ZoomOut, X } from "lucide-react";
+import { ZoomIn, ZoomOut, X, Loader2 } from "lucide-react";
 
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -188,7 +188,7 @@ export function PostForm({ onSuccess }: { onSuccess: () => void }) {
                 disabled={isSubmitting || !isValid}
                 className="w-full"
             >
-                {isSubmitting ? "Posting..." : "Post"}
+                {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Post"}
             </Button>
 
             {isViewerOpen && preview && (

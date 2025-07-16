@@ -69,7 +69,7 @@ export function PostEditDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="lg:max-w-xl">
                 <DialogTitle>Edit Post</DialogTitle>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
@@ -108,7 +108,7 @@ export function PostEditDialog({
                             {isSubmitting ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
-                                "Update"
+                                "Edit"
                             )}
                         </Button>
                     </div>

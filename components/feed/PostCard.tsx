@@ -2,14 +2,13 @@
 
 import Image from "next/image";
 import {
-    MessageCircle,
     Loader2,
     MoreHorizontal,
     X,
     ZoomIn,
     ZoomOut,
     Pencil,
-    Trash2,
+    Trash,
 } from "lucide-react";
 import {
     Tooltip,
@@ -36,6 +35,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PostEditDialog } from "./PostEditDialog";
 import { PostDeleteDialog } from "./PostDeleteDialog";
+import { CommentDialog } from "@/components/feed/CommentDialog";
 
 export function PostCard({
     post: initialPost,
@@ -104,7 +104,7 @@ export function PostCard({
                                     className="cursor-pointer flex justify-between"
                                 >
                                     <span>Delete</span>
-                                    <Trash2 className="w-4 h-4" />
+                                    <Trash className="w-4 h-4" />
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -147,8 +147,11 @@ export function PostCard({
                                     zIndex: 100,
                                 },
                             }}
-                            controller={{ disableSwipeNavigation: true }}
-                            zoom={{
+                            controller={{
+                                closeOnBackdropClick: true,
+                                closeOnPullDown: true,
+                                disableSwipeNavigation: true,
+                            }} zoom={{
                                 maxZoomPixelRatio: 3,
                                 zoomInMultiplier: 2,
                                 doubleTapDelay: 300,
@@ -184,10 +187,7 @@ export function PostCard({
                     )}
                     <span>{post.likes_count}</span>
                 </button>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <MessageCircle className="h-4 w-4" />
-                    <span>{post.comments_count}</span>
-                </div>
+                <CommentDialog postId={post.id} count={post.comments_count} />
             </div>
 
             <PostEditDialog

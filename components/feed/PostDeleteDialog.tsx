@@ -45,7 +45,7 @@ export function PostDeleteDialog({
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent>
-                <AlertDialogTitle>Confirm delete</AlertDialogTitle>
+                <AlertDialogTitle>Confirm action</AlertDialogTitle>
                 <AlertDialogDescription>
                     Are you sure you want to delete this post? This action cannot be undone.
                 </AlertDialogDescription>
@@ -55,19 +55,15 @@ export function PostDeleteDialog({
                             Cancel
                         </Button>
                     </AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                        <Button
-                            type="submit"
-                            variant="destructive"
-                            onClick={handleDelete}
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                                "Delete"
-                            )}
-                        </Button>
+                    <AlertDialogAction
+                        className="bg-destructive text-white hover:bg-destructive/90"
+                        onClick={handleDelete}
+                        disabled={isSubmitting}>
+                        {isSubmitting ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                            "Delete"
+                        )}
                     </AlertDialogAction>
                 </div>
             </AlertDialogContent>
