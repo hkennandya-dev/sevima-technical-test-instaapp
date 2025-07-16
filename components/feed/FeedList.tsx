@@ -61,13 +61,21 @@ export function FeedList({ refreshKey }: { refreshKey: number }) {
       }
       endMessage={
         <p className="text-center text-sm text-muted-foreground">
-          No more posts.
+          {posts.length > 0 ? "No more posts." : "No posts available."}
         </p>
       }
     >
       <div className="flex flex-col gap-4 overflow-clip">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <PostCard
+            key={post.id}
+            post={post}
+            onRemoved={() => {
+              setPosts([]);
+              setPage(1);
+              fetchPosts(1);
+            }}
+          />
         ))}
       </div>
     </InfiniteScroll>

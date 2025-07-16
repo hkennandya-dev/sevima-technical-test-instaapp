@@ -219,9 +219,9 @@ export function PostForm({ onSuccess }: { onSuccess: () => void }) {
                         iconPrev: () => null,
                         buttonNext: () => null,
                         buttonPrev: () => null,
-                        iconZoomIn: () => <ZoomIn className="cursor-pointer w-6 h-6 text-white opacity-75 hover:opacity-100" />,
-                        iconZoomOut: () => <ZoomOut className="cursor-pointer w-6 h-6 text-white opacity-75 hover:opacity-100" />,
-                        iconClose: () => <X className="cursor-pointer w-6 h-6 text-white opacity-75 hover:opacity-100" />,
+                        iconZoomIn: () => <ZoomIn className="w-6 h-6 text-inherit opacity-75 hover:opacity-100" />,
+                        iconZoomOut: () => <ZoomOut className="w-6 h-6 text-inherit opacity-75 hover:opacity-100" />,
+                        iconClose: () => <X className="w-6 h-6 text-inherit opacity-75 hover:opacity-100" />,
                     }}
                 />
             )}
