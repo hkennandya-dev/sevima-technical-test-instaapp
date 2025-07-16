@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/user";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
+import { parseErrorMessage } from "@/lib/error";
 
 export default function AuthLayout({
     children,
@@ -32,9 +33,8 @@ export default function AuthLayout({
                 } else {
                     throw new Error("Unauthorized");
                 }
-            } catch (err: any) {
-                const message = err?.response?.data?.message || err?.message || "Unauthorized.";
-
+            } catch (err: unknown) {
+                const message = parseErrorMessage(err, "Unauthorized.");
                 toast.error(message);
                 localStorage.removeItem("auth-token");
                 clearUser();

@@ -1,35 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { api } from "@/lib/axios";
 import { PostCard } from "@/components/feed/PostCard";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { parseErrorMessage } from "@/lib/error";
+import { Post } from "@/types/post";
 
 export function FeedList() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const res = await api.get(`/posts?page=${page}&paginate=10`);
-      const newPosts = res.data.data;
+      const newPosts: Post[] = res.data.data;
       const isNext = res.data.paginate.is_next;
       setPosts((prev) => [...prev, ...newPosts]);
       setPage((prev) => prev + 1);
       setHasMore(isNext);
-    } catch (error: any) {
-      toast.error(
-        error?.response?.data?.message || "Failed to load posts."
-      );
+    } catch (error: unknown) {
+      const message = parseErrorMessage(error, "Failed to load posts.");
+      toast.error(message);
     }
-  };
+  }, [page]);
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
 
   return (
     <InfiniteScroll

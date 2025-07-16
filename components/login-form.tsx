@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { AxiosErrorResponse, parseErrorMessage } from "@/lib/error";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -52,10 +53,18 @@ export function LoginForm({
       } else {
         toast.error(res.data?.message || "Unexpected response from server");
       }
-    } catch (err: any) {
-      const message =
-        err?.response?.data?.message || err?.message || "Login failed.";
-      const serverErrors = err?.response?.data?.error;
+    } catch (err: unknown) {
+      const message = parseErrorMessage(err, "Login failed.");
+      let serverErrors: Record<string, string[]> | undefined;
+
+      const typedErr = err as AxiosErrorResponse;
+
+      if (
+        typedErr.response?.data?.error &&
+        typeof typedErr.response.data.error === "object"
+      ) {
+        serverErrors = typedErr.response.data.error;
+      }
 
       toast.error(message);
 

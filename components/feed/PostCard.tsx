@@ -12,8 +12,10 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Post } from "@/types/post";
+import { parseErrorMessage } from "@/lib/error";
 
-export function PostCard({ post: initialPost }: { post: any }) {
+export function PostCard({ post: initialPost }: { post: Post }) {
     const [post, setPost] = useState(initialPost);
     const [loading, setLoading] = useState(false);
 
@@ -25,13 +27,14 @@ export function PostCard({ post: initialPost }: { post: any }) {
             } else {
                 await api.post(`/posts/${post.id}/like`);
             }
-            setPost((prev: any) => ({
+            setPost((prev: Post) => ({
                 ...prev,
                 is_liked: !prev.is_liked,
                 likes_count: prev.is_liked ? prev.likes_count - 1 : prev.likes_count + 1,
             }));
-        } catch (e) {
-            toast.error("Failed to update like.");
+        } catch (error: unknown) {
+            const message = parseErrorMessage(error, "Failed to update like.");
+            toast.error(message);
         } finally {
             setLoading(false);
         }

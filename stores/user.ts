@@ -1,12 +1,6 @@
+import { User } from "@/types/user";
 import { create } from "zustand";
 
-export type User = {
-    id: number;
-    name: string;
-    username: string;
-    created_at: string;
-    updated_at: string;
-};
 
 type UserStore = {
     user: User | null;
