@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { MessageCircle, Loader2 } from "lucide-react";
+import { MessageCircle, Loader2, ZoomIn, ZoomOut, X } from "lucide-react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { toast } from "sonner";
 import { api } from "@/lib/axios";
@@ -15,9 +15,13 @@ import {
 import { Post } from "@/types/post";
 import { parseErrorMessage } from "@/lib/error";
 
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+
 export function PostCard({ post: initialPost }: { post: Post }) {
     const [post, setPost] = useState(initialPost);
     const [loading, setLoading] = useState(false);
+    const [isViewerOpen, setIsViewerOpen] = useState(false);
 
     const handleLike = async () => {
         try {
@@ -69,8 +73,43 @@ export function PostCard({ post: initialPost }: { post: Post }) {
                         alt="Post image"
                         width={800}
                         height={500}
-                        className="rounded-md object-contain"
+                        className="rounded-md object-contain cursor-pointer"
+                        onClick={() => setIsViewerOpen(true)}
                     />
+                    {isViewerOpen && (
+                        <Lightbox
+                            open={isViewerOpen}
+                            close={() => setIsViewerOpen(false)}
+                            slides={[{ src: post.image_path }]}
+                            plugins={[Zoom]}
+                            styles={{
+                                container: {
+                                    backgroundColor: "rgba(0, 0, 0, 0.9)",
+                                    zIndex: 100,
+                                },
+                                button: { filter: "none" }
+                            }}
+                            controller={{
+                                closeOnBackdropClick: true,
+                                closeOnPullDown: true,
+                                disableSwipeNavigation: true,
+                            }}
+                            zoom={{
+                                maxZoomPixelRatio: 3,
+                                zoomInMultiplier: 2,
+                                doubleTapDelay: 300,
+                            }}
+                            render={{
+                                iconNext: () => null,
+                                iconPrev: () => null,
+                                buttonNext: () => null,
+                                buttonPrev: () => null,
+                                iconZoomIn: () => <ZoomIn className="cursor-pointer w-6 h-6 text-white opacity-75 hover:opacity-100" />,
+                                iconZoomOut: () => <ZoomOut className="cursor-pointer w-6 h-6 text-white opacity-75 hover:opacity-100" />,
+                                iconClose: () => <X className="cursor-pointer w-6 h-6 text-white opacity-75 hover:opacity-100" />,
+                            }}
+                        />
+                    )}
                 </div>
             )}
 
