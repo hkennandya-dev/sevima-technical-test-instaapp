@@ -10,6 +10,7 @@ import {
 import {
     AlertDialog,
     AlertDialogContent,
+    AlertDialogDescription,
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogFooter,
@@ -29,7 +30,7 @@ import {
 } from "@/components/ui/tooltip";
 
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash, MoreHorizontal } from "lucide-react";
+import { Pencil, Trash, MoreHorizontal, Loader2 } from "lucide-react";
 import dayjs from "@/lib/dayjs";
 import { useUserStore } from "@/stores/user";
 import { Textarea } from "@/components/ui/textarea";
@@ -149,7 +150,7 @@ export function CommentCard({
                             Cancel
                         </Button>
                         <Button onClick={handleEdit} disabled={submitting || !editContent.trim()}>
-                            Save
+                            {submitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Edit"}
                         </Button>
                     </div>
                 </DialogContent>
@@ -158,7 +159,8 @@ export function CommentCard({
             <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure you want to delete this comment?</AlertDialogTitle>
+                        <AlertDialogTitle>Confirm action</AlertDialogTitle>
+                        <AlertDialogDescription>Are you sure you want to delete this comment? This action cannot be undone.</AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel disabled={submitting}>Cancel</AlertDialogCancel>
@@ -167,7 +169,7 @@ export function CommentCard({
                             onClick={handleDelete}
                             disabled={submitting}
                         >
-                            Delete
+                            {submitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Delete"}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

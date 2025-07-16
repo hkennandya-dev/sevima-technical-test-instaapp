@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { AxiosErrorResponse, parseErrorMessage } from "@/lib/error";
+import { Loader2 } from "lucide-react";
 
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -136,7 +137,7 @@ export function RegisterForm({
             </div>
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Registering..." : "Register"}
+              {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Register"}
             </Button>
 
             <div className="mt-4 text-center text-sm">

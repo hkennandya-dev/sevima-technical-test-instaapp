@@ -124,8 +124,7 @@ export function CommentDialog({ postId, count }: { postId: number; count: number
                         disabled={!isValid || isSubmitting}
                         className="w-full"
                     >
-                        {isSubmitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                        Comment
+                        {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Comment"}
                     </Button>
                 </form>
 
